@@ -1,0 +1,133 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --foreground: 0 0% 4%;
+  --background: 0 0% 100%;
+  --muted-foreground: 0 0% 42%;
+  --destructive: 0 72% 51%;
+  --brand: 158 64% 36%;
+  --brand-foreground: 0 0% 100%;
+  --brand-2: 190 80% 42%;
+  --canvas: 150 20% 98%;
+  --panel: 0 0% 100%;
+  --hairline: 160 10% 88%;
+}
+
+.dark {
+  --foreground: 0 0% 96%;
+  --background: 200 18% 6%;
+  --muted-foreground: 200 8% 62%;
+  --destructive: 0 70% 58%;
+  --brand: 158 60% 46%;
+  --brand-foreground: 0 0% 4%;
+  --brand-2: 190 75% 50%;
+  --canvas: 200 18% 6%;
+  --panel: 200 14% 10%;
+  --hairline: 200 10% 18%;
+}
+
+@theme inline {
+  --color-foreground: hsl(var(--foreground));
+  --color-background: hsl(var(--background));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-brand: hsl(var(--brand));
+  --color-brand-foreground: hsl(var(--brand-foreground));
+  --color-brand-2: hsl(var(--brand-2));
+  --color-canvas: hsl(var(--canvas));
+  --color-panel: hsl(var(--panel));
+  --color-hairline: hsl(var(--hairline));
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+body {
+  margin: 0;
+  overflow-x: hidden;
+  background: hsl(var(--canvas));
+  color: hsl(var(--foreground));
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+* {
+  border-color: hsl(var(--hairline));
+}
+
+/* ---------- TaskPilot motion ---------- */
+@keyframes tp-rise {
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes tp-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes tp-slide-in { from { transform: translateX(-100%); } to { transform: none; } }
+@keyframes tp-dot {
+  0%, 80%, 100% { transform: translateY(0); opacity: 0.35; }
+  40% { transform: translateY(-4px); opacity: 1; }
+}
+@keyframes tp-shimmer { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
+@keyframes tp-pulse {
+  0% { box-shadow: 0 0 0 0 hsl(var(--brand) / 0.55); }
+  100% { box-shadow: 0 0 0 8px hsl(var(--brand) / 0); }
+}
+@keyframes tp-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-6px) rotate(6deg); }
+}
+@keyframes tp-spin-slow { to { transform: rotate(360deg); } }
+@keyframes tp-ripple {
+  from { transform: translate(-50%, -50%) scale(0.3); opacity: 0.9; }
+  to { transform: translate(-50%, -50%) scale(2.4); opacity: 0; }
+}
+@keyframes tp-border-glow {
+  0%, 100% { box-shadow: 0 0 0 1px hsl(var(--brand) / 0.5), 0 10px 30px -8px hsl(var(--brand) / 0.35); }
+  50% { box-shadow: 0 0 0 2px hsl(var(--brand) / 0.9), 0 14px 40px -6px hsl(var(--brand) / 0.5); }
+}
+
+.tp-rise { animation: tp-rise 0.42s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.tp-fade { animation: tp-fade 0.3s ease-out both; }
+.tp-slide-in { animation: tp-slide-in 0.32s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.tp-dot { animation: tp-dot 1.2s ease-in-out infinite; }
+.tp-pulse { animation: tp-pulse 1.4s ease-out infinite; }
+.tp-float { animation: tp-float 5s ease-in-out infinite; }
+.tp-border-glow { animation: tp-border-glow 2s ease-in-out infinite; }
+.tp-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, hsl(var(--brand) / 0.9), transparent);
+  animation: tp-shimmer 1.3s ease-in-out infinite;
+}
+.tp-orb {
+  background: conic-gradient(from 0deg, hsl(var(--brand)), hsl(var(--brand-2)), hsl(var(--brand)));
+  animation: tp-spin-slow 8s linear infinite;
+}
+.tp-glow {
+  background-image:
+    radial-gradient(60% 50% at 20% 0%, hsl(var(--brand) / 0.14), transparent 70%),
+    radial-gradient(50% 40% at 90% 10%, hsl(var(--brand-2) / 0.12), transparent 70%);
+}
+.tp-ripple {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  border-radius: 9999px;
+  border: 3px solid hsl(var(--brand));
+  background: hsl(var(--brand) / 0.25);
+  pointer-events: none;
+  animation: tp-ripple 0.6s ease-out forwards;
+}
+.tp-press { transition: transform 0.15s ease, opacity 0.15s ease, background-color 0.2s ease; }
+.tp-press:active { transform: scale(0.94); }
+
+@media (prefers-reduced-motion: reduce) {
+  .tp-rise, .tp-fade, .tp-slide-in, .tp-dot, .tp-pulse, .tp-float, .tp-orb, .tp-shimmer::after, .tp-border-glow {
+    animation: none !important;
+  }
+}
